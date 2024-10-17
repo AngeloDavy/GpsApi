@@ -4,10 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import test.api.gps.controller.dto.CreatePointOfIterest;
 import test.api.gps.entity.PointOfInterest;
 import test.api.gps.repository.PointOfInterestRepository;
@@ -23,7 +20,7 @@ public class PointOfInterestController {
         this.repository = repository;
     }
 
-    @PostMapping("/points-of-intere")
+    @PostMapping("/points-of-intere")   
     public ResponseEntity<Void> createPoi(@RequestBody CreatePointOfIterest body){
 
         repository.save(new PointOfInterest(body.name(), body.x(), body.y()));
@@ -57,6 +54,18 @@ public class PointOfInterestController {
                 .toList();
 
         return ResponseEntity.ok(body);
+    }
+
+    @DeleteMapping("/points-of-intere/{id}")
+    public ResponseEntity<Void> deletePoi(@PathVariable Long id) {
+        // Verifica se o POI existe
+        var poi = repository.findById(id);
+        if (poi.isPresent()) {
+            repository.deleteById(id);
+            return ResponseEntity.noContent().build();  // Retorna 204 No Content se deletado com sucesso
+        } else {
+            return ResponseEntity.notFound().build();   // Retorna 404 se o POI não for encontrado
+        }
     }
 
     private Double distanceBetweenPoints(Long x1, Long y1, Long x2, Long y2) {

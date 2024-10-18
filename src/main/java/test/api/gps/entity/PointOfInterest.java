@@ -16,14 +16,25 @@ public class PointOfInterest {
 
     private Long y;
 
+    private Long cep;
+
+    public Long getCep() {
+        return cep;
+    }
+
+    public void setCep(Long cep) {
+        this.cep = cep;
+    }
+
     public PointOfInterest() {
 
     }
 
-    public PointOfInterest(String name, Long x, Long y) {
+    public PointOfInterest(String name, Long x, Long y, Long cep) {
         this.name = name;
         this.x = x;
         this.y = y;
+        this.cep = cep;
     }
 
     public Long getId() {
